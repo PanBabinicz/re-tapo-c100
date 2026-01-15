@@ -1,0 +1,110 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DECIMAL                            HEXADECIMAL                        DESCRIPTION
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+26624                              0x6800                             uImage firmware image, header size: 64 bytes, data size: 82133 bytes, compression: lzma, CPU: MIPS32, OS: Firmware, image type: 
+                                                                      Firmware Image, load address: 0x80100000, entry point: 0x0, creation time: 2024-06-17 11:22:53, image name: "u-boot-lzma.img"
+196864                             0x30100                            gzip compressed data, operating system: Unix, timestamp: 2024-06-17 11:24:57, total size: 53568 bytes
+327680                             0x50000                            uImage firmware image, header size: 64 bytes, data size: 66729 bytes, compression: lzma, CPU: MIPS32, OS: Firmware, image type: 
+                                                                      Firmware Image, load address: 0x820A0000, entry point: 0x0, creation time: 2024-06-17 11:22:25, image name: "u-boot-lzma.img"
+459264                             0x70200                            uImage firmware image, header size: 64 bytes, data size: 1298384 bytes, compression: lzma, CPU: MIPS32, OS: Linux, image type: OS 
+                                                                      Kernel Image, load address: 0x80010000, entry point: 0x8031E330, creation time: 2024-06-17 11:24:47, image name: "mips Ingenic 
+                                                                      Linux-3.10.14"
+1797686                            0x1B6E36                           XZ compressed data, total size: 30012 bytes
+1827698                            0x1BE372                           XZ compressed data, total size: 31052 bytes
+1858750                            0x1C5CBE                           XZ compressed data, total size: 30800 bytes
+1889550                            0x1CD50E                           XZ compressed data, total size: 26280 bytes
+1915830                            0x1D3BB6                           XZ compressed data, total size: 14656 bytes
+1930486                            0x1D74F6                           XZ compressed data, total size: 17192 bytes
+1947678                            0x1DB81E                           XZ compressed data, total size: 14900 bytes
+1962578                            0x1DF252                           XZ compressed data, total size: 10256 bytes
+1972834                            0x1E1A62                           XZ compressed data, total size: 22512 bytes
+1995346                            0x1E7252                           XZ compressed data, total size: 10248 bytes
+2005594                            0x1E9A5A                           XZ compressed data, total size: 21088 bytes
+2026682                            0x1EECBA                           XZ compressed data, total size: 6064 bytes
+2032746                            0x1F046A                           XZ compressed data, total size: 24208 bytes
+2056954                            0x1F62FA                           XZ compressed data, total size: 20504 bytes
+2077458                            0x1FB312                           XZ compressed data, total size: 24384 bytes
+2101842                            0x201252                           XZ compressed data, total size: 26244 bytes
+2128086                            0x2078D6                           XZ compressed data, total size: 25180 bytes
+2153266                            0x20DB32                           XZ compressed data, total size: 24180 bytes
+2177446                            0x2139A6                           XZ compressed data, total size: 28316 bytes
+2205762                            0x21A842                           XZ compressed data, total size: 26020 bytes
+2231782                            0x220DE6                           XZ compressed data, total size: 25176 bytes
+2256958                            0x22703E                           XZ compressed data, total size: 16576 bytes
+2273534                            0x22B0FE                           XZ compressed data, total size: 35604 bytes
+2309138                            0x233C12                           XZ compressed data, total size: 21800 bytes
+2330938                            0x23913A                           XZ compressed data, total size: 4604 bytes
+2335542                            0x23A336                           XZ compressed data, total size: 18996 bytes
+2354538                            0x23ED6A                           XZ compressed data, total size: 21652 bytes
+2376190                            0x2441FE                           XZ compressed data, total size: 21024 bytes
+2397214                            0x24941E                           XZ compressed data, total size: 21376 bytes
+2418590                            0x24E79E                           XZ compressed data, total size: 17956 bytes
+2436546                            0x252DC2                           XZ compressed data, total size: 22000 bytes
+2458546                            0x2583B2                           XZ compressed data, total size: 37016 bytes
+2495562                            0x26144A                           XZ compressed data, total size: 21956 bytes
+2517518                            0x266A0E                           XZ compressed data, total size: 17040 bytes
+2534558                            0x26AC9E                           XZ compressed data, total size: 16120 bytes
+2550678                            0x26EB96                           XZ compressed data, total size: 7060 bytes
+2557738                            0x27072A                           XZ compressed data, total size: 16020 bytes
+2573758                            0x2745BE                           XZ compressed data, total size: 23056 bytes
+2596814                            0x279FCE                           XZ compressed data, total size: 24236 bytes
+2621050                            0x27FE7A                           XZ compressed data, total size: 23652 bytes
+2644702                            0x285ADE                           XZ compressed data, total size: 26556 bytes
+2671258                            0x28C29A                           XZ compressed data, total size: 21624 bytes
+2692882                            0x291712                           XZ compressed data, total size: 24600 bytes
+2717482                            0x29772A                           XZ compressed data, total size: 23036 bytes
+2740518                            0x29D126                           XZ compressed data, total size: 27328 bytes
+2767846                            0x2A3BE6                           XZ compressed data, total size: 22784 bytes
+2790630                            0x2A94E6                           XZ compressed data, total size: 19700 bytes
+2810330                            0x2AE1DA                           XZ compressed data, total size: 19580 bytes
+2829910                            0x2B2E56                           XZ compressed data, total size: 17024 bytes
+2846934                            0x2B70D6                           XZ compressed data, total size: 16984 bytes
+2863918                            0x2BB32E                           XZ compressed data, total size: 20552 bytes
+2884470                            0x2C0376                           XZ compressed data, total size: 22536 bytes
+2907006                            0x2C5B7E                           XZ compressed data, total size: 27980 bytes
+2934986                            0x2CC8CA                           XZ compressed data, total size: 23244 bytes
+2958230                            0x2D2396                           XZ compressed data, total size: 21820 bytes
+2980050                            0x2D78D2                           XZ compressed data, total size: 15392 bytes
+2995442                            0x2DB4F2                           XZ compressed data, total size: 7056 bytes
+3002498                            0x2DD082                           XZ compressed data, total size: 19808 bytes
+3022306                            0x2E1DE2                           XZ compressed data, total size: 19644 bytes
+3041950                            0x2E6A9E                           XZ compressed data, total size: 21884 bytes
+3063834                            0x2EC01A                           XZ compressed data, total size: 22964 bytes
+3086798                            0x2F19CE                           XZ compressed data, total size: 34616 bytes
+3121414                            0x2FA106                           XZ compressed data, total size: 17448 bytes
+3138862                            0x2FE52E                           XZ compressed data, total size: 14780 bytes
+3153642                            0x301EEA                           XZ compressed data, total size: 4824 bytes
+3158466                            0x3031C2                           XZ compressed data, total size: 19040 bytes
+3177506                            0x307C22                           XZ compressed data, total size: 22628 bytes
+3200134                            0x30D486                           XZ compressed data, total size: 21988 bytes
+3222122                            0x312A6A                           XZ compressed data, total size: 23636 bytes
+3245758                            0x3186BE                           XZ compressed data, total size: 22696 bytes
+3268454                            0x31DF66                           XZ compressed data, total size: 1124 bytes
+3269578                            0x31E3CA                           XZ compressed data, total size: 26400 bytes
+3295978                            0x324AEA                           XZ compressed data, total size: 9704 bytes
+3305682                            0x3270D2                           XZ compressed data, total size: 14944 bytes
+3320626                            0x32AB32                           XZ compressed data, total size: 32800 bytes
+3353426                            0x332B52                           XZ compressed data, total size: 784 bytes
+3354210                            0x332E62                           XZ compressed data, total size: 17936 bytes
+3372146                            0x337472                           XZ compressed data, total size: 25024 bytes
+3397170                            0x33D632                           XZ compressed data, total size: 25140 bytes
+3422310                            0x343866                           XZ compressed data, total size: 24472 bytes
+3446782                            0x3497FE                           XZ compressed data, total size: 28164 bytes
+3474946                            0x350602                           XZ compressed data, total size: 27360 bytes
+3502306                            0x3570E2                           XZ compressed data, total size: 20920 bytes
+3523226                            0x35C29A                           XZ compressed data, total size: 18724 bytes
+3541950                            0x360BBE                           XZ compressed data, total size: 9124 bytes
+3551074                            0x362F62                           XZ compressed data, total size: 11628 bytes
+3562702                            0x365CCE                           XZ compressed data, total size: 15200 bytes
+3577902                            0x36982E                           XZ compressed data, total size: 23956 bytes
+3601860                            0x36F5C4                           XZ compressed data, total size: 1668 bytes
+3603530                            0x36FC4A                           XZ compressed data, total size: 1652 bytes
+3605184                            0x3702C0                           XZ compressed data, total size: 3724 bytes
+3608910                            0x37114E                           XZ compressed data, total size: 580 bytes
+3609492                            0x371394                           XZ compressed data, total size: 152 bytes
+3609654                            0x371436                           XZ compressed data, total size: 884 bytes
+3997696                            0x3D0000                           SquashFS file system, little endian, version: 4.0, compression: xz, inode count: 95, block size: 65536, image size: 3225548 
+                                                                      bytes, created: 2024-06-17 11:24:55
+7224524                            0x6E3CCC                           gzip compressed data, operating system: Unix, timestamp: 2024-06-17 11:24:57, total size: 53568 bytes
+7798784                            0x770000                           JFFS2 filesystem, little endian, nodes: 18, total size: 491532 bytes
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
