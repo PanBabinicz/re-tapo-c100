@@ -145,14 +145,7 @@ class extractor:
                 file_out.close()
             file_in.close()
         elif (self.op == "pack"):
-            #first_part = parts[0]
-            #print(first_part.name)
             file_out = open(self.file, 'wb')
-            #file_in = open(self.path + "/" + first_part.name, 'rb')
-            #data = file_in.read(first_part.size)
-            #file_out.write(data)
-            #file_in.close()
-            #for i in range(1,4len(parts)):
             for i in range(0, len(parts) - 1):
                 part_curr = parts[i]
                 part_next = parts[i+1]
