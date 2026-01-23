@@ -1,7 +1,6 @@
 import sys
 import firmware_part as fwp
 
-
 class extractor:
     def __init__(self):
         self.firmware_parts = [
