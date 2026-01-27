@@ -63,3 +63,16 @@
 ```console
 ~ mksquashfs <unsquashed-filesystem> <new-squashfs> -comp <compression> -b <block size>
 ```
+
+## Make image
+
+```console
+~ mkimage -A <arch> -O <os> -T <type> -C <compresion> -a <addr> -e <entry> -n <name> -d <input> <output>
+```
+
+## Merge uimage part with modified squashfs
+
+```console
+~ dd if=<uimage_part> of=<final_image> bs=1 count=<number-of-bytes>
+~ dd if=<squashfs_part> of=<final_image> bs=1 seek=$((<hex-address>))
+```
