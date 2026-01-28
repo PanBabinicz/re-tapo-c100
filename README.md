@@ -76,3 +76,17 @@
 ~ dd if=<uimage_part> of=<final_image> bs=1 count=<number-of-bytes>
 ~ dd if=<squashfs_part> of=<final_image> bs=1 seek=$((<hex-address>))
 ```
+
+## SquashFS validation by size
+
+> The bootloader validates the SquashFS (rootfs) partition **by size**, not by content(?).
+> During firmware validation, U-Boot checks that the compressed SquashFS image
+> **exactly matches the size defined in the partition table (TP header)**.
+>
+> Because of this, any modification to files inside the SquashFS (even a single byte)
+> will usually change the final compressed image size, causing validation to fail and
+> the firmware to be rejected.
+>
+> To work around this, an audio file was modified inside the filesystem and then recompress SquashFS
+> **until the resulting image has exactly the same size as the original**.
+> This preserves the expected partition size while still allowing controlled content changes.
