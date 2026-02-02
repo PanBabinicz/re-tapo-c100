@@ -90,3 +90,31 @@
 > To work around this, an audio file was modified inside the filesystem and then recompress SquashFS
 > **until the resulting image has exactly the same size as the original**.
 > This preserves the expected partition size while still allowing controlled content changes.
+
+## Image Merge Script (`mrgimg.sh`)
+
+> This script merges a binary firmware part into an existing base
+> image at a specified offset, producing a new combined output image.
+> It is commonly used in firmware reconstruction workflows where
+> individual partitions must be reinserted into a full flash dump.
+
+### Usage
+
+```console
+~ ./mrgimg.sh <part-to-merge> <size> <output-img>
+```
+
+## SquashFS Size-Tuning Script
+
+> This Bash script repeatedly rebuilds a SquashFS filesystem and
+> dynamically adjusts its contents until the resulting filesystem
+> matches a **target size exactly**. It is useful when repacking firmware
+> images that require a SquashFS partition to have a **precise byte
+> length** (e.g., fixed-offset flash layouts).
+>
+> The script runs in a loop, incrementally adding or removing data from a
+> file inside the filesystem until the desired size is reached.
+
+```console
+./tunesquashfs <squashfs-root-dir> <block-size> <compression> <expected-size> <squashfs-output>
+```
