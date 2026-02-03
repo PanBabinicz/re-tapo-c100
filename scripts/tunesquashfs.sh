@@ -9,7 +9,6 @@ while true; do
     rm -rf ${5} 2> /dev/null
     mksquashfs ${1} ${5} -comp ${3} -b ${2} -no-exports -noappend
 
-    random_num=$(tr -dc 0-9 < /dev/urandom | head -c 1; echo)
     random=$(tr -dc A-Za-z0-9 < /dev/urandom | head -c 13; echo)
     size=$(unsquashfs -s ${5} | grep "Filesystem size" | grep -oE "[0-9]+{6}")
     temp=2
@@ -27,7 +26,6 @@ while true; do
         cat 2 > squashfs-root/lib/audio/Red_Alert.g711
     fi
 
-    echo ${size}
-
+    echo "Current size = ${size}"
     sleep 0.2
 done
