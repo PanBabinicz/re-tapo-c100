@@ -1,13 +1,13 @@
 #!/bin/bash
 
-if [ $# -ne 4 ]; then
+if [ $# -ne 5 ]; then
     echo "Usage tunesquashfs.sh <squashfs-root-dir> <block-size> <compression> <expected-size> <squashfs-output>"
     exit
 fi
 
 while true; do
     rm -rf ${5} 2> /dev/null
-    mksquashfs ${1} ${5} -comp ${3} -b ${2}
+    mksquashfs ${1} ${5} -comp ${3} -b ${2} -no-exports -noappend
 
     random_num=$(tr -dc 0-9 < /dev/urandom | head -c 1; echo)
     random=$(tr -dc A-Za-z0-9 < /dev/urandom | head -c 13; echo)
@@ -16,13 +16,14 @@ while true; do
 
     if [ ${size} -eq ${4} ]; then
         echo "Equal"
+        rm -rf 2 2> /dev/null
         exit
     elif [ ${size} -lt ${4} ]; then
         echo "Add"
         echo ${random} >> squashfs-root/lib/audio/Red_Alert.g711
     elif [ ${size} -gt ${4} ]; then
         echo "Remove"
-        head -c -1 squashfs-root/lib/audio/Red_Alert.g711 > 2
+        head -c -7 squashfs-root/lib/audio/Red_Alert.g711 > 2
         cat 2 > squashfs-root/lib/audio/Red_Alert.g711
     fi
 
