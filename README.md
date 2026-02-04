@@ -17,10 +17,11 @@
 > model has evolved over time. This includes examining mitigation techniques, hardening measures,
 > and changes in exposed services or interfaces.
 >
-> All activities described in this project are conducted for educational and security research purposes
+> [!NOTE]
+> **All activities described in this project are conducted for educational and security research purposes
 > on owned hardware. The findings are intended to contribute to a better understanding of consumer IoT
 > device security, support vulnerability research, and promote transparency and informed risk assessment
-> in smart home deployments.
+> in smart home deployments.**
 
 ## How to obtain passwd and shadow files?
 
