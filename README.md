@@ -45,11 +45,11 @@
 > **FCC ID filings are publicly available artifacts submitted for regulatory compliance and do
 > not grant access to proprietary firmware or vendor source code.**
 
-[!FCC-Search](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-search.png)
-[!FCC-List](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-list.png)
-[!FCC-Internal-1](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-internal-1.png)
-[!FCC-Flash](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-internal-flash.png)
-[!FCC-MCU](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-internal-mcu.png)
+![FCC-Search](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-search.png)
+![FCC-List](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-list.png)
+![FCC-Internal-1](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-internal-1.png)
+![FCC-Flash](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-internal-flash.png)
+![FCC-MCU](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-internal-mcu.png)
 
 
 ## How to obtain passwd and shadow files?
