@@ -16,7 +16,7 @@
 > introduced in newer firmware versions, this research aims to analyze how the device’s security
 > model has evolved over time. This includes examining mitigation techniques, hardening measures,
 > and changes in exposed services or interfaces.
->
+
 > [!NOTE]
 > **All activities described in this project are conducted for educational and security research purposes
 > on owned hardware. The findings are intended to contribute to a better understanding of consumer IoT
