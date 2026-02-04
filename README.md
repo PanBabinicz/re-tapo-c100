@@ -23,6 +23,35 @@
 > device security, support vulnerability research, and promote transparency and informed risk assessment
 > in smart home deployments.**
 
+## Using the FCC ID to Research Hardware Components
+
+> Before acquiring the TP-Link Tapo C100 unit for this project, the device’s **FCC ID** was used
+> as a starting point to gather information about the hardware platform and installed components.
+> The FCC ID database, maintained by the U.S. Federal Communications Commission, contains publicly
+> accessible filings submitted by manufacturers as part of radio equipment certification.
+>
+> By querying the Tapo C100’s FCC ID in the FCC Equipment Authorization System
+> (available at `https://www.fcc.gov/oet/ea/fccid`), it is possible to retrieve documents such as
+> internal photos, block diagrams, test reports, and parts lists that suppliers and module makers
+> provided during certification. These documents often include:
+>
+> Using the FCC ID database allowed me to **identify the processor family, wireless chipset, and
+> supporting modules** before purchasing the camera, enabling better preparation and tooling for
+> teardown and firmware analysis. This preliminary research can greatly reduce guesswork in later
+> stages of reverse engineering, such as selecting the correct JTAG/SWD interfaces or understanding
+> flash memory characteristics.
+
+> [!NOTE]
+> **FCC ID filings are publicly available artifacts submitted for regulatory compliance and do
+> not grant access to proprietary firmware or vendor source code.**
+
+[!FCC-Search](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-search.png)
+[!FCC-List](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-list.png)
+[!FCC-Internal-1](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-internal-1.png)
+[!FCC-Flash](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-internal-flash.png)
+[!FCC-MCU](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-internal-mcu.png)
+
+
 ## How to obtain passwd and shadow files?
 
 > After extracting the firmware with `binwalk`, search the extracted
