@@ -51,6 +51,30 @@
 ![FCC-Flash](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-internal-flash.png)
 ![FCC-MCU](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-internal-mcu.png)
 
+## UART Access and Initial Shell Discovery
+
+> After gaining preliminary insight into the device’s internal components, the next step in the analysis was
+> to obtain direct access to the system shell via a UART (Universal Asynchronous Receiver/Transmitter) interface
+>  UART access is commonly present on embedded Linux-based devices and is frequently used by manufacturers for
+> debugging, development, and factory testing.
+>
+> The first challenge was identifying the UART pinout on the camera’s PCB. As the interface is not documented
+> publicly and not exposed through labeled headers, the process began with locating the ground (GND) reference
+> point. A multimeter was used to identify ground by checking continuity against known ground planes and shielding
+> on the board.
+>
+> Once ground was established, the remaining candidate pads were examined to distinguish transmit (TX) and
+> receive (RX) lines. An oscilloscope was used to observe signal activity during the device’s boot sequence,
+> allowing identification of pins exhibiting serial data patterns consistent with UART communication.
+>
+> Using a combination of multimeter measurements and oscilloscope inspection provided a reliable way to
+> identify the UART interface while minimizing the risk of hardware damage. Establishing UART access enabled
+> visibility into the boot process and system messages, forming the foundation for further analysis of the
+> factory firmware and later firmware versions.
+
+![FCC-UART](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/fccid-internal-uart.png)
+![UART-CONNECTION](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/uart-connection.jpg)
+
 
 ## How to obtain passwd and shadow files?
 
