@@ -484,7 +484,8 @@ DECIMAL                            HEXADECIMAL                        DESCRIPTIO
 >
 > Based on that research and subsequent firmware inspection, it appeared that the factory password scheme was not
 > purely random. Instead, the hashes seemed related to predictable device identifiers such as the MCU name
-> combined with a fixed seed or *SLP* word — a pattern documented in Crabtree’s analysis.
+> combined with a fixed seed or *SLP* word — a pattern documented in Crabtree’s analysis
+> (https://notes.landon.pw/notes/embedded/TP-LINK-Tapo-C100).
 >
 > To assess the difficulty of recovering the actual login credentials, an offline hash-cracking approach was
 > attempted using **hashcat** accelerated by an AMD Radeon RX 7800 XT GPU. The goal was to estimate how long
