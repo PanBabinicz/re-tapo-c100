@@ -473,19 +473,18 @@ DECIMAL                            HEXADECIMAL                        DESCRIPTIO
 
 ## Authentication and Password Analysis
 
-> Once UART connectivity between the host terminal and the device was established, the next hurdle was
-> authenticating to obtain an interactive shell. The serial console presented a login prompt, but there
-> was no official documentation available for default credentials on either the factory or updated firmware.
+> The next hurdle was authenticating to obtain an interactive shell. The serial console presented a login prompt,
+> but there was no official documentation available for default credentials on either the factory or updated
+> firmware.
 >
 > To understand how the password system might work, background research was done, including reviewing the detailed
 > reverse-engineering write-up by Landon Crabtree on the Tapo C100. This embedded hacking note describes hardware
 > exploration and approaches to gaining shell access on the same model of camera, providing useful context on the
-> device’s authentication mechanisms and internal structure.
+> device’s authentication mechanisms and internal structure (https://notes.landon.pw/notes/embedded/TP-LINK-Tapo-C100).
 >
 > Based on that research and subsequent firmware inspection, it appeared that the factory password scheme was not
 > purely random. Instead, the hashes seemed related to predictable device identifiers such as the MCU name
-> combined with a fixed seed or *SLP* word — a pattern documented in Crabtree’s analysis
-> (https://notes.landon.pw/notes/embedded/TP-LINK-Tapo-C100).
+> combined with a fixed seed or *SLP* word — a pattern documented in Crabtree’s analysis.
 >
 > To assess the difficulty of recovering the actual login credentials, an offline hash-cracking approach was
 > attempted using **hashcat** accelerated by an AMD Radeon RX 7800 XT GPU. The goal was to estimate how long
