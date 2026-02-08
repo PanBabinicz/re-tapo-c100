@@ -657,6 +657,22 @@ done
 > external BusyBox binary hosted on a remote server. With the expanded toolset available at runtime, the device
 > was able to establish an outbound connection and provide a reverse shell with root privileges.
 
+## Post-Exploitation: System Exploration and Network Visibility
+
+> On the remote droplet server, a listener was started to accept incoming connections from the device.
+> Once the modified firmware completed its startup sequence, the device initiated an outbound connection and
+> provided a reverse shell with root privileges.
+>
+> With full shell access established, it was possible to explore the entire system, including the filesystem
+> layout, running processes, startup scripts, and available networking tools. This confirmed that the modified
+> runtime environment was functioning as intended and that the device was operating normally while exposing
+> elevated access.
+>
+> To verify network connectivity and visibility from the device’s perspective, a basic network test was performed
+> by pinging another device located on the same local network segment. The result of this test is shown below.
+
+![DROPLET-PING](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/droplet-ping.png)
+
 
 ## Make squashfs filesystem
 
