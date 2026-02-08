@@ -671,78 +671,6 @@ done
 > To verify network connectivity and visibility from the device’s perspective, a basic network test was performed
 > by pinging another device located on the same local network segment. The result of this test is shown below.
 
-![DROPLET-PING](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/droplet-ping.png)
-
-
-## Make squashfs filesystem
-
-> Display filesystem superblock information
-
-```console
-~ unsquashfs -s <old-squashfs>
-```
-
-> Make squashfs with backdoor.sh script
-
-```console
-~ mksquashfs <unsquashed-filesystem> <new-squashfs> -comp <compression> -b <block size>
-```
-
-## Make image
-
-```console
-~ mkimage -A <arch> -O <os> -T <type> -C <compresion> -a <addr> -e <entry> -n <name> -d <input> <output>
-```
-
-## Merge uimage part with modified squashfs
-
-```console
-~ dd if=<uimage_part> of=<final_image> bs=1 count=<number-of-bytes>
-~ dd if=<squashfs_part> of=<final_image> bs=1 seek=$((<hex-address>))
-```
-
-## SquashFS validation by size
-
-> The bootloader validates the SquashFS (rootfs) partition **by size**, not by content(?).
-> During firmware validation, U-Boot checks that the compressed SquashFS image
-> **exactly matches the size defined in the partition table (TP header)**.
->
-> Because of this, any modification to files inside the SquashFS (even a single byte)
-> will usually change the final compressed image size, causing validation to fail and
-> the firmware to be rejected.
->
-> To work around this, an audio file was modified inside the filesystem and then recompress SquashFS
-> **until the resulting image has exactly the same size as the original**.
-> This preserves the expected partition size while still allowing controlled content changes.
-
-## Image Merge Script (`mrgimg.sh`)
-
-> This script merges a binary firmware part into an existing base
-> image at a specified offset, producing a new combined output image.
-> It is commonly used in firmware reconstruction workflows where
-> individual partitions must be reinserted into a full flash dump.
-
-### Usage
-
-```console
-~ ./mrgimg.sh <part-to-merge> <size> <output-img>
-```
-
-## SquashFS Size-Tuning Script
-
-> This Bash script repeatedly rebuilds a SquashFS filesystem and
-> dynamically adjusts its contents until the resulting filesystem
-> matches a **target size exactly**. It is useful when repacking firmware
-> images that require a SquashFS partition to have a **precise byte
-> length** (e.g., fixed-offset flash layouts).
->
-> The script runs in a loop, incrementally adding or removing data from a
-> file inside the filesystem until the desired size is reached.
-
-```console
-./tunesquashfs <squashfs-root-dir> <block-size> <compression> <expected-size> <squashfs-output>
-```
-
 ```console
 .
 .
@@ -754,8 +682,22 @@ Host is up (0.011s latency).
 Nmap done: 256 IP addresses (11 hosts up) scanned in 4.49 seconds
 ```
 
-The last part I get on serial port
+![DROPLET-PING](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/droplet-ping.png)
+
+## Analysis of the Latest Firmware and Bypassing Authentication
+
+> After completing the analysis of the factory firmware, the device was updated to the latest available firmware
+> version at the time of testing: ***1.4.3-build251128-rel63757n***
+>
+> Following the update, the same authentication approach used previously was tested. Unlike the factory firmware,
+> this version no longer exposed an interactive login prompt over the serial interface. The UART output was
+> limited strictly to debug messages during boot, and there was no mechanism to provide a username or password.
+> As a result, the previously recovered factory password (`slpingenic`) was no longer usable, and direct
+> authentication via UART was effectively disabled.
+
 ```console
+<-- The last part I get on serial port
+
 [    0.577587] SLP flash nor read
 [    0.580892] MTD_REDBOOT_TP_HEADER_ADDRESS:0x70000
 [    0.591274] decrypt_rootfs_header done
@@ -788,6 +730,83 @@ The last part I get on serial port
 [    0.769194] SPI NOR MTD LOAD OK
 
 <-- nothing I can do, cannot enter the credentials..
+```
+
+> Firmware inspection using binwalk revealed that the overall structure had changed compared to earlier versions.
+> After some investigation, it became clear that a similar runtime-based approach could still be used to retrieve
+> an external BusyBox (`busybox-mipsel`) binary into RAM, enabling extended functionality despite the lack of an
+> interactive login.
+>
+> Because the memory layout had changed, a new memory map was required for the Python extraction and repacking
+> script. This allowed the firmware to be unpacked and rebuilt correctly for the updated image format. The
+> backdoor logic was consolidated directly into the same script used for firmware manipulation, maintaining
+> consistency with the earlier approach.
+>
+> As with the factory firmware, a non-critical audio file within the SquashFS filesystem was modified to
+> precisely control the final firmware size. The SquashFS image in this version differed in size from earlier
+> releases, and the password hash stored in the filesystem had also changed, rendering previous credentials
+> obsolete.
+>
+> Despite these changes, it was still possible to achieve a reverse shell with root privileges after flashing
+> the modified firmware. This shell access was obtained without relying on password-based authentication,
+> effectively bypassing the credential checks entirely.
+>
+> This phase of the research demonstrated that, although the latest firmware introduced mitigations such as
+> disabling serial login and modifying filesystem layout, the underlying update and validation mechanisms could
+> still be adapted to introduce persistent behavior when their constraints were carefully respected.
+>
+> In the factory firmware, the stored password hash was relatively short and aligned with the previously
+> identified deterministic credential scheme. In contrast, the latest firmware stored a noticeably longer hash
+> value in the `passwd` file. This suggests the use of a different hashing algorithm, stronger parameters
+> (such as increased salt or iteration count), or an entirely revised authentication mechanism.
+>
+> Despite this improvement in password storage, the ability to obtain a reverse shell without relying on
+> password-based authentication rendered these changes ineffective from a defensive standpoint. By bypassing
+> the login process entirely, the strengthened credential hashing no longer acted as a meaningful barrier to
+> privileged access.
+
+![DROPLET-1.4.3](https://github.com/PanBabinicz/re-tapo-c100/blob/master/screenshots/droplet-1.4.3-build251128-rel63757n-backdoor.png)
+
+## Appendix
+
+### Make squashfs filesystem
+
+> Display filesystem superblock information
+
+```console
+~ unsquashfs -s <old-squashfs>
+```
+
+> Make squashfs with backdoor.sh script
+
+```console
+~ mksquashfs <unsquashed-filesystem> <new-squashfs> -comp <compression> -b <block size>
+```
+
+### Make image
+
+```console
+~ mkimage -A <arch> -O <os> -T <type> -C <compresion> -a <addr> -e <entry> -n <name> -d <input> <output>
+```
+
+### Merge uimage part with modified squashfs
+
+```console
+~ dd if=<uimage_part> of=<final_image> bs=1 count=<number-of-bytes>
+~ dd if=<squashfs_part> of=<final_image> bs=1 seek=$((<hex-address>))
+```
+
+### Image Merge Script (`mrgimg.sh`)
+
+> This script merges a binary firmware part into an existing base
+> image at a specified offset, producing a new combined output image.
+> It is commonly used in firmware reconstruction workflows where
+> individual partitions must be reinserted into a full flash dump.
+
+#### Usage
+
+```console
+~ ./mrgimg.sh <part-to-merge> <size> <output-img>
 ```
 
 ## References
