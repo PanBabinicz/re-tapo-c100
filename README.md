@@ -599,7 +599,7 @@ done
 ## Firmware Repacking, Integrity Checks, and Persistent Access
 
 > Building on prior analysis, the next phase focused on modifying the firmware itself to enable persistent
-> functionality. A Python-based toolchain was used to unpack and repack the firmware components in the correct
+> functionality. A Python-based script was used to unpack and repack the firmware components in the correct
 > order, following the general approach demonstrated in the StackSmashing video. This made it possible to extract
 > individual elements, including the SquashFS root filesystem, apply modifications, and reassemble the firmware
 > image.
@@ -769,7 +769,9 @@ Nmap done: 256 IP addresses (11 hosts up) scanned in 4.49 seconds
 
 ## Appendix
 
-### Make squashfs filesystem
+### Tools
+
+#### Make squashfs filesystem
 
 > Display filesystem superblock information
 
@@ -783,27 +785,25 @@ Nmap done: 256 IP addresses (11 hosts up) scanned in 4.49 seconds
 ~ mksquashfs <unsquashed-filesystem> <new-squashfs> -comp <compression> -b <block size>
 ```
 
-### Make image
+#### Make image
 
 ```console
 ~ mkimage -A <arch> -O <os> -T <type> -C <compresion> -a <addr> -e <entry> -n <name> -d <input> <output>
 ```
 
-### Merge uimage part with modified squashfs
+#### Merge uimage part with modified squashfs
 
 ```console
 ~ dd if=<uimage_part> of=<final_image> bs=1 count=<number-of-bytes>
 ~ dd if=<squashfs_part> of=<final_image> bs=1 seek=$((<hex-address>))
 ```
 
-### Image Merge Script (`mrgimg.sh`)
+#### Image Merge Script (`mrgimg.sh`)
 
 > This script merges a binary firmware part into an existing base
 > image at a specified offset, producing a new combined output image.
 > It is commonly used in firmware reconstruction workflows where
 > individual partitions must be reinserted into a full flash dump.
-
-#### Usage
 
 ```console
 ~ ./mrgimg.sh <part-to-merge> <size> <output-img>
